@@ -730,6 +730,7 @@ class Helpers
 
     public static function gen_mpdf($view, $file_prefix, $file_postfix)
     {
+		try {
         $mpdf = new \Mpdf\Mpdf(['default_font' => 'FreeSerif', 'mode' => 'utf-8', 'format' => [190, 250]]);
         /* $mpdf->AddPage('XL', '', '', '', '', 10, 10, 10, '10', '270', '');*/
         $mpdf->autoScriptToLang = true;
@@ -739,6 +740,9 @@ class Helpers
         $mpdf_view = $mpdf_view->render();
         $mpdf->WriteHTML($mpdf_view);
         $mpdf->Output($file_prefix . $file_postfix . '.pdf', 'D');
+		} catch (\Exception $e) {
+			 echo $e->getMessage();
+		}
     }
 }
 
@@ -782,9 +786,8 @@ function translate($key)
             $result = __('messages.' . $key);
         }
     } catch (\Exception $exception) {
-        $result = __('messages.' . $key);
+	    $result = __('messages.' . $key);
     }
-
     return $result;
 }
 
